@@ -1,4 +1,4 @@
-# Personal Health Analytics Dashboard
+# Personal Fit/Health Analytics Dashboard
 
 > Built because it's Fun to build your own solution, also I really needed that data
 > metric views, trend analysis, or cross-data correlations needed for meaningful
