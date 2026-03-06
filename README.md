@@ -9,6 +9,8 @@
 **Refresh:** Fitbit every 2 hours · Cronometer daily at 3am
 
 ---
+![Dashboard](Dashboard.png)
+
 
 ## Background
 
@@ -89,7 +91,7 @@ Fitbit Web API                   Cronometer Web Export
 | `Steps_Intraday`  | Fitbit      | Minute-level step counts                                    | 7 days  |
 | `SpO2`            | Fitbit      | Placeholder — not available via public Web API              | —       |
 | `Cronometer`      | Cronometer  | Date, Carbs (g), Fat (g), Protein (g), Energy (kcal)        | All     |
-
+| `Mood'            | Personal Evaluation / Import | Mood of the day, Bad to Very Good          | All     |
 
 ---
 
@@ -125,8 +127,8 @@ https://drive.google.com/drive/folders/FOLDER_ID_HERE
 
 1. Go to [dev.fitbit.com](https://dev.fitbit.com) → **Manage** → **Register an App**.
 
-> ⚠️ Do **not** use the word "Fitbit" in your app name or organisation name.
-> This violates Fitbit's trademark policy and the registration will be rejected.
+> Do **not** use the word "Fitbit" in your app name or organisation name.
+> This violates Fitbit's trademark policy, and the registration will be rejected.
 
 | Field | Value |
 |-------|-------|
