@@ -1,6 +1,6 @@
 # Personal Health Analytics Dashboard
 
-> Built because It's Fun to Build your own solution also I really needed those data
+> Built because it's Fun to build your own solution, also I really needed that data
 > metric views, trend analysis, or cross-data correlations needed for meaningful
 > personal health/fit tracking.
 
@@ -14,15 +14,15 @@
 
 ## Background
 
-Fitbit, in its infinite wisdom, decided the web dashboard had to go — because apparently letting users actually see their own data on a proper screen was a bit too empowering. So the web version was removed, and the remaining dashboards were “simplified”… which in product-speak usually translates to good luck finding anything useful anymore.
+Fitbit, in its infinite wisdom, decided the web dashboard had to go — because apparently letting users actually see their own data on a proper screen was a bit too empowering.
 
-Things like custom metric combinations, long-term trends, or correlating activity, sleep, heart rate, and nutrition in one place quietly disappeared. Because clearly the average human cannot be trusted with that level of analytical power.
+Things like custom metric combinations, long-term trends, activity, sleep, and heart rate, all in one place, quietly disappeared (from the web version). Because clearly the average human cannot be trusted with that level of analytical power.
 
-So naturally, the only logical response was to rebuild the whole thing myself.
+So naturally, the only logical response was to rebuild the whole thing myself, adding some macro data as well from Cronometer.
 
-This project pulls raw data from two sources into Google Sheets and then builds a fully custom, live dashboard in Looker Studio — restoring the extremely dangerous ability to analyze your own health metrics.
+This project pulls raw data from two sources into Google Sheets and pushes it to a fully custom, live dashboard in Looker Studio — restoring the extremely dangerous ability to analyse your own health metrics.
 
-Also, I just wanted to do my own thing and build the dashboard exactly the way I wanted, without an app deciding what I’m allowed to see.
+Also, I just wanted to do my own thing and build the dashboard exactly the way I wanted, adding some macro data as well, without an app deciding what I’m allowed to see.
 
 Sometimes the best feature request is: fine, I’ll build it myself. 😄
 
@@ -91,11 +91,11 @@ Fitbit Web API                   Cronometer Web Export
 | `Steps_Intraday`  | Fitbit      | Minute-level step counts                                    | 7 days  |
 | `SpO2`            | Fitbit      | Placeholder — not available via public Web API              | —       |
 | `Cronometer`      | Cronometer  | Date, Carbs (g), Fat (g), Protein (g), Energy (kcal)        | All     |
-| `Mood'            | Personal Evaluation / Import | Mood of the day, Bad to Very Good          | All     |
+| `Mood`            | Personal Evaluation / Import | Mood of the day, Bad to Very Good          | All     |
 
 ---
 
-## Setup Guide
+## Setup Guide (the anorthodox way - my way)
 
 ### Step 1 — Create Google Sheet
 
@@ -113,7 +113,7 @@ https://docs.google.com/spreadsheets/d/SHEET_ID_HERE/edit
 ### Step 2 — Create Google Drive Folder for Cronometer
 
 1. Go to [drive.google.com](https://drive.google.com) → **New** → **Folder**.
-2. Name it: `how I managed to eat so many calories`.
+2. Name it: `How I managed to eat so many calories`.
 3. Copy the **Folder ID** from the URL:
 
 ```
@@ -148,7 +148,7 @@ https://drive.google.com/drive/folders/FOLDER_ID_HERE
 ### Step 4 — Create Apps Script Project
 
 1. Go to [script.google.com](https://script.google.com) → **New project**.
-2. Name it: `Health Dashboard Puller`.
+2. Name it: `Health Dashboard Puller or something more fun`.
 3. Add OAuth2 library:
    - Left sidebar → **Libraries** → **+**
    - Paste: `token`
@@ -164,7 +164,7 @@ var SHEET_ID          = 'YOUR_GOOGLE_SHEET_ID';
 const DRIVE_FOLDER_ID = 'YOUR_DRIVE_FOLDER_ID';
 ```
 
-7. Save with **Ctrl + S**.
+7. Save with **Ctrl + S** (you know the drill).
 
 ---
 
@@ -234,25 +234,7 @@ want to update the nutrition data. The trigger reads whatever CSV is in the fold
 2. **Add data** → **Google Sheets** → select `Health Dashboard`.
 3. Add each tab as a separate data source.
 
-#### Suggested charts
-
-| Chart | Source Tab | Metrics | Dimension |
-|-------|-----------|---------|-----------|
-| Steps Trend | `Activity` | Steps | Date |
-| Calories Burned | `Activity` | Calories | Date |
-| Active Minutes | `Activity` | VeryActiveMin, FairlyActiveMin | Date |
-| HR Range | `HeartRate` | RestingHR, MinHR, MaxHR, AvgHR | Date |
-| Sleep Breakdown | `Sleep` | Deep, Light, REM, Awake | Date |
-| Sleep Score | `Sleep` | Score, Efficiency | Date |
-| Weight & BMI | `Body` | Weight(kg), BMI | Date |
-| Exercise Timeline | `Exercise` | Calories, Duration | StartTime |
-| Steps Heatmap | `Steps_Intraday` | Steps | DateTime |
-| Macro Breakdown | `Cronometer` | Protein, Carbs, Fat | Date |
-| Calories In | `Cronometer` | Energy (kcal) | Date |
-| Calories In vs Out | Blended `Activity` + `Cronometer` | Calories vs Energy | Date |
-
-> **Pro tip:** Use Looker Studio's **Blended Data** to join `Activity` and
-> `Cronometer` on `Date` for a calories-in vs. calories-out correlation chart.
+Have Fun With It!
 
 ---
 
@@ -262,7 +244,7 @@ want to update the nutrition data. The trigger reads whatever CSV is in the fold
 // ================================================================
 // PERSONAL HEALTH ANALYTICS DASHBOARD — Google Apps Script
 // Sources: Fitbit Web API + Cronometer CSV via Google Drive
-// Javascript conrtibutor Claude Code
+// Javascript contributor Claude Code
 // ================================================================
 
 // ── Fitbit config ──────────────────────────────────────────────
@@ -333,8 +315,8 @@ function authCallback(request) {
   var service = getFitbitService();
   var ok = service.handleCallback(request);
   return HtmlService.createHtmlOutput(
-    ok ? 'Success! Close this tab and return to Apps Script.'
-       : 'Authorization failed. Check redirect URL and credentials.'
+    ok? 'Success! Close this tab and return to Apps Script.'
+       'Authorisation failed. Check redirect URL and credentials.'
   );
 }
 
@@ -735,7 +717,6 @@ Since the Cronometer Android app does not support CSV export, the workflow is:
 | App name rejected at Fitbit | Do not use the word "Fitbit" in app name or organisation name (trademark policy) |
 | SpO₂ data missing | Not available via public Fitbit Web API |
 | `csvFile.getBlob().getContentAsString is not a function` | Use `.getAs('text/plain').getDataAsString()` instead |
-| Cronometer tab shows all 50+ columns | Ensure you are running the latest script version — it outputs only 5 clean columns |
 | `No Cronometer CSV found in folder` | Upload `dailysummary.csv` to the correct Drive folder |
 
 ---
@@ -771,3 +752,4 @@ Since the Cronometer Android app does not support CSV export, the workflow is:
 - [Cronometer Export Guide](https://support.cronometer.com)
 - [Looker Studio Help](https://support.google.com/looker-studio)
 
+ar1syro 2026
