@@ -89,7 +89,6 @@ Fitbit Web API                   Cronometer Web Export
 | `Body`            | Fitbit      | Weight (kg), BMI, body fat %                                | 30 days |
 | `Exercise`        | Fitbit      | Workout name, duration, calories, distance, avg HR          | Recent  |
 | `Steps_Intraday`  | Fitbit      | Minute-level step counts                                    | 7 days  |
-| `SpO2`            | Fitbit      | Placeholder — not available via public Web API              | —       |
 | `Cronometer`      | Cronometer  | Date, Carbs (g), Fat (g), Protein (g), Energy (kcal)        | All     |
 | `Mood`            | Personal Evaluation / Import | Mood of the day, Bad to Very Good          | All     |
 
@@ -551,18 +550,6 @@ function pullStepsIntraday(ss, opts) {
   if (rows.length) sheet.getRange(2,1,rows.length,3).setValues(rows);
 }
 
-// ─── Fitbit: SpO2 Placeholder ─────────────────────────────────────────────────
-
-function createSpO2Placeholder(ss) {
-  var sheet = ss.getSheetByName('SpO2') || ss.insertSheet('SpO2');
-  sheet.clear();
-  sheet.getRange(1,1,1,3).setValues([['Date','SpO2(%)','Notes']]);
-  sheet.getRange(2,1,1,3).setValues([[
-    '','',
-    'Not available via standard public Fitbit Web API. Requires enterprise/research export.'
-  ]]);
-}
-
 // ─── Cronometer: Import from Google Drive ─────────────────────────────────────
 
 function importCronometerFromDrive() {
@@ -715,7 +702,6 @@ Since the Cronometer Android app does not support CSV export, the workflow is:
 | Empty sheet tabs | Check Apps Script execution logs for `Non-200` entries |
 | Token expired / revoked | Run `resetAuth()` then `authorizeFitbit()` again |
 | App name rejected at Fitbit | Do not use the word "Fitbit" in app name or organisation name (trademark policy) |
-| SpO₂ data missing | Not available via public Fitbit Web API |
 | `csvFile.getBlob().getContentAsString is not a function` | Use `.getAs('text/plain').getDataAsString()` instead |
 | `No Cronometer CSV found in folder` | Upload `dailysummary.csv` to the correct Drive folder |
 
@@ -739,7 +725,7 @@ Since the Cronometer Android app does not support CSV export, the workflow is:
 - [ ] Add rolling 1-year history pull for Fitbit
 - [ ] Add Active Zone Minutes endpoint
 - [ ] Add device battery and last-sync status tab
-- [ ] Connect SpO₂ tab via enterprise/research data export
+- [ ] Add/Connect SpO₂ tab via enterprise/research data export
 - [ ] Automate Cronometer export via TrueNAS cron + cronometer-export CLI - Maybe
 
 
