@@ -22,7 +22,7 @@ So naturally, the only logical response was to rebuild the whole thing myself, a
 
 This project pulls raw data from two sources into Google Sheets and pushes it to a fully custom, live dashboard in Looker Studio — restoring the extremely dangerous ability to analyse your own health metrics.
 
-Also, I just wanted to do my own thing and build the dashboard exactly the way I wanted, adding some macro data as well, without an app deciding what I’m allowed to see.
+Also, I just wanted to do my own thing and build the dashboard exactly the way I wanted, without an app deciding what I’m allowed to see.
 
 Sometimes the best feature request is: fine, I’ll build it myself. 😄
 
