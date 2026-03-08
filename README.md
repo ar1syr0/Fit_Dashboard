@@ -6,7 +6,7 @@
 
 **Stack:** Fitbit Web API + Cronometer CSV → Google Apps Script → Google Sheets → Looker Studio
 **Cost:** 100% free
-**Refresh:** Fitbit every 2 hours · Cronometer daily at 3am
+**Refresh:** Fitbit every 1 hours · Cronometer daily at 3am
 
 ---
 ![Dashboard](Dashboard.png)
@@ -35,7 +35,7 @@ free. Unlike MyFitnessPal (export is Premium-only) or apps with no export at all
 Cronometer lets you export a `dailysummary.csv` covering all macro and micronutrient
 data. The export is web-only (not available in the Android app) — the workflow
 handles this by uploading the CSV to a Google Drive folder, which Apps Script reads
-automatically on a daily schedule. Currenly working a few automated solutions for direct feed through github sources but none suits me for now.
+automatically on a daily schedule. Currently working on a few automated solutions for direct feed through GitHub sources, but none suits me for now.
 
 ---
 
@@ -109,7 +109,7 @@ https://docs.google.com/spreadsheets/d/SHEET_ID_HERE/edit
 
 ---
 
-### Step 2 — Create Google Drive Folder for Cronometer
+### Step 2 — Create a Google Drive Folder for Cronometer
 
 1. Go to [drive.google.com](https://drive.google.com) → **New** → **Folder**.
 2. Name it: `How I managed to eat so many calories`.
@@ -554,7 +554,7 @@ function pullStepsIntraday(ss, opts) {
 
 function importCronometerFromDrive() {
   try {
-    // Step 1 — Find dailysummary.csv in Drive folder
+    // — Find dailysummary.csv in Drive folder
     var folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
     var files  = folder.getFilesByName('dailysummary.csv');
 
@@ -566,7 +566,7 @@ function importCronometerFromDrive() {
     var csvFile = files.next();
     Logger.log('Found file: ' + csvFile.getName());
 
-    // Step 2 — Read and parse CSV
+    // — Read and parse CSV
     // .getAs('text/plain') is required because Drive stores uploaded files
     // in a format where .getBlob().getContentAsString() does not work.
     var csvContent = csvFile.getAs('text/plain').getDataAsString();
@@ -577,7 +577,7 @@ function importCronometerFromDrive() {
       return;
     }
 
-    // Step 3 — Locate required columns
+    // — Locate required columns
     var headers    = rows;
     var dateIdx    = headers.indexOf('Date');
     var proteinIdx = headers.indexOf('Protein (g)');
@@ -590,7 +590,7 @@ function importCronometerFromDrive() {
       return;
     }
 
-    // Step 4 — Build clean 5-column output
+    // — Build a clean 5-column output
     // Energy formula: (Protein × 4) + (Carbs × 4) + (Fat × 9) + (Alcohol × 7)
     var cleanRows = [['Date','Carbs (g)','Fat (g)','Protein (g)','Energy (kcal)']];
 
@@ -610,7 +610,7 @@ function importCronometerFromDrive() {
       ]);
     }
 
-    // Step 5 — Write to Cronometer tab
+    // — Write to Cronometer tab
     var ss    = SpreadsheetApp.openById(SHEET_ID);
     var sheet = ss.getSheetByName(SHEET_TAB_NAME);
     if (!sheet) {
